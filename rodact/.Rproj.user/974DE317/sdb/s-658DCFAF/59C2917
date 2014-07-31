@@ -1,0 +1,16 @@
+{
+    "contents" : "SessionInfo = read.table(\"Activity/sessionInfo.txt\",header=T,colClasses=\"character\")\n\n#for (i in 1:nrow(SessionInfo))\n#{\n # fixData(SessionInfo$Subject[i],SessionInfo$Session[i])\n#}\n\n#order = read.delim(\"Activity/Counterbalance.txt\",colClasses=\"character\")\n\n#for (i in 61:nrow(SessionInfo))\n#{\n  #Handle Gen 0 diffferently\n # if (substr(SessionInfo$Subject[i],1,1)==0)\n  #{\n   # if ((order$OFBox[order$Subject==SessionInfo$Subject[i]] == 1 & SessionInfo$Session[i] < 3) |\n    #    (order$OFBox[order$Subject==SessionInfo$Subject[i]] == 2 & SessionInfo$Session[i] > 2) |\n     #   (SessionInfo$Session[i] > 4))\n    #{labelZones(SessionInfo$Subject[i],SessionInfo$Session[i],type=\"OF\")}\n    #else\n    #{labelZones(SessionInfo$Subject[i],SessionInfo$Session[i])}\n  #}\n  #else\n  #{labelZones(SessionInfo$Subject[i],SessionInfo$Session[i])}\n#}\n\n\nRearData = getRearData(SessionInfo$Subject[1],SessionInfo$Session[1])\nfor (i in 2:nrow(SessionInfo))\n{\n  RearData = rbind(RearData,getRearData(SessionInfo$Subject[i],SessionInfo$Session[i]))\n}\nRearData = merge(SessionInfo,RearData,by=c(\"Subject\",\"Session\"))\nlevels(RearData$Zone)=c(\"Dark\",\"Doorway\",\"Light\")\nSubjectInfo = read.delim(\"SelectiveBreeding/SubjectInfo.txt\")\nRearData = merge(SubjectInfo,RearData,by=\"Subject\")\nRearData$Line=as.factor(RearData$Line)\nlevels(RearData$Line)=c(\"LE\",\"RB\",\"HE\")\nRearData$Zone[RearData$Generation>0&RearData$Session==1]=\"Dark\"\nqplot(RearStart,RearDuration,data=subset(RearData,Zone!=\"Doorway\"&RearStart<=600&Generation>2),\n      group=Line,geom=\"smooth\",color=Line,facets=Zone~Exposure~Generation)+theme_bw()\nqplot(Generation,maxRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nqplot(Generation,meanRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nqplot(Generation,varRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nwrite.table(RearData,file=\"Activity/RearingDuration.txt\",sep=\"\\t\",row.names=FALSE)",
+    "created" : 1406746431979.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "141030860",
+    "id" : "59C2917",
+    "lastKnownWriteTime" : 1389155308,
+    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/Activity/munge/ActivityMunging.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
