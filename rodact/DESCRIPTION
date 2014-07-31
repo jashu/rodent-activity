@@ -1,9 +1,11 @@
 Package: rodact
 Type: Package
-Title: What the package does (short line)
+Title: Rodent Activity
 Version: 1.0
 Date: 2014-07-30
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Jason Shumake
+Maintainer: Jason Shumake <shumake@utexas.edu>
+Description: Extracts data from raw export files of Activity Monitor (Med
+    Associates), for more intensive analysis of rodent exploratory behavior
+    than is provided by the Activity Monitor software
+License: GPL-3
