@@ -1,0 +1,16 @@
+{
+    "contents" : "#'  getRearData\n#'  \n#'  Computes rearing counts, duration, and summary stats for a single subject.\n#'  \n#'  @param subject subject ID corresponding to file with activity time series.\n#'  @param session session number corresponding to folder where file is located.\n#'  @param file_path optional specification of file path where session folders are located.\n#'  Defaults to current working directory.\n#'  @param file_ext optional specification of file extension if something other than \"txt\".\n#'  @return data frame containing subject, session, zone, rearing count, start time,\n#'  duration, minimum rearing duration, maximum rearing duration, mean rearing duration, and\n#'  rearing variability score)\n#'  @author Jason Shumake\n#'  @details\n#'  WARNING: this function should only be run on files that are analysis ready, i.e.,\n#'  you've already run \"fixData\" and \"labelZones\" on all files. \n#'  @export\n\n\ngetRearData <- function(subject, session, file_path = getwd(), file_ext = \"txt\")\n{\n  file = paste(file_path, \"/Session\", session, \"/\", subject, \".\", file_ext ,sep=\"\")\n  data = read.table(file,header=T)\n  if (typeof(data$Time) == \"integer\") stop (\"Data is unprocessed. First run 'fixData'.\")\n  if (typeof(data$Zone) == \"NULL\") stop (\"Zones are not labeled. First run 'labelZones'.\")\n  data$Zone=as.character(data$Zone)\n  #Count total number of rears\n  rearCount = 0\n  if (data$Z[1] > 0)\n  {\n    rearCount = 1\n  }\n  for (i in 2:nrow(data))\n  {\n    if (data$Z[i]>0 & data$Z[i-1]==0)\n        {\n        rearCount = rearCount + 1\n        }\n  }\n  #Compute start time and duration of each rear\n  Zone = vector(\"character\",rearCount)\n  Start = vector(\"numeric\",rearCount)\n  Duration = vector(\"numeric\", rearCount)\n  Count=vector(\"numeric\",rearCount)\n  rearCount = 0\n  if (data$Z[1] > 0)\n  {\n    rearCount = 1\n    Count[1] = 1\n    Start[1]= .05\n    Duration[1]=.05\n    Zone[1] = data$Zone[1]\n  }\n  for (i in 2:nrow(data))\n    {\n    if (data$Z[i]>0)\n      {\n      if (data$Z[i-1]==0)\n        {\n        rearCount = rearCount + 1\n        Count[rearCount] = rearCount\n        Start[rearCount]=data$Time[i]\n        Zone[rearCount] = data$Zone[i]\n        }\n      Duration[rearCount]=Duration[rearCount]+.05\n      }\n      \n}\n  #Write data frame\n  rearData = data.frame(Subject=subject,Session=session,Zone=Zone,RearCount=Count,RearStart=Start,\n                        RearDuration=Duration)\n  #If animal was rearing as the session ended, do not count last time point\n  if (data$Z[nrow(data)]>0)\n    rearData=rearData[1:(nrow(rearData)-1),]  \n  #Remove erroneous data\n  rearData = subset(rearData,RearDuration<9)\n\n  return (rearData)\n}\n\n",
+    "created" : 1407094320360.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1510686633",
+    "id" : "F86F62FB",
+    "lastKnownWriteTime" : 1407092730,
+    "path" : "~/Dropbox/R/Packages/rodact/R/getRearData.R",
+    "project_path" : "R/getRearData.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,16 @@
+{
+    "contents" : "library(rodact)\nfile_path = \"data/raw/activity\"\nsessionInfo = read.delim(paste(file_path, \"/SessionInfo.txt\", sep=\"\"),colClasses=\"character\")\norder = read.delim(paste(file_path, \"/actTestSeq.txt\", sep=\"\"),colClasses=\"character\")\n\nfor (i in 1:nrow(sessionInfo))\n{\n  fixData(sessionInfo$Subject[i],sessionInfo$Session[i],file_path = file_path)\n}\n\n",
+    "created" : 1407098624190.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2185384768",
+    "id" : "EB01F4EE",
+    "lastKnownWriteTime" : 1407090338,
+    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/munge/activity/01.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

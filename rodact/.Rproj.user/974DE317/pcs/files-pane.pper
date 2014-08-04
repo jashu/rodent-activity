@@ -1,5 +1,5 @@
 {
-    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/Activity/data/raw",
+    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/munge/activity",
     "sortOrder" : [
         {
             "ascending" : true,

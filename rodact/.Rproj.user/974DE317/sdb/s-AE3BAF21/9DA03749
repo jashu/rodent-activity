@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1407115440744.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9DA03749",
+    "lastKnownWriteTime" : 140735675560448,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "rearing",
+        "contentUrl" : "content?title=rearing&file=b70fcefd56664ab0811f6980d0373298.htm",
+        "displayedObservations" : "1000",
+        "displayedVariables" : 21,
+        "totalObservations" : "56633",
+        "variables" : "25"
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

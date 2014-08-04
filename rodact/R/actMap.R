@@ -23,7 +23,11 @@ actMap = function(subject, session, time = c(0,10), file_path = getwd(), file_ex
   time = time*60
   file = paste(file_path, "/Session", session, "/", subject, ".", file_ext, sep="")
   data = read.table(file,header=T)
+  data$colvar = 0
+  data$colvar[data$Zone=='dark'] = -1
+  data$colvar[data$Zone=='light'] = 1
   if (typeof(data$Time)=="integer") stop("Data is unprocessed. First run 'fixData'.")
   data = subset(data, Time >= time[1] & Time <= time[2])
-  return (with (data, lines3D(X, Y, Z, zlim = c(0,1.5*max(Z)), colkey=F)))
+  return (with (data, lines3D(X, Y, Z, xlim = c(1,16), ylim = c(1,16), zlim = c(0,1.5*max(Z)),
+                              colvar = colvar, clim = c(-1,1), colkey = F)))
 }

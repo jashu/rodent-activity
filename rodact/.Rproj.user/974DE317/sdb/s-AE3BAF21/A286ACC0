@@ -1,0 +1,16 @@
+{
+    "contents" : "library(rodact)\n\nfile_path = \"data/raw/activity\"\nsessionInfo = read.table(paste(file_path, \"/SessionInfo.txt\", sep=\"\"),header=T,colClasses=\"character\")\nsessionInfo = subset(sessionInfo,Session <= 4, select = -Exposure)\nsessionInfo$Test.Condition = \"Light-Dark\"\nfor (i in 1:nrow(sessionInfo))\n{\n  type = 'LD'\n  subject = sessionInfo$Subject[i]\n  session = sessionInfo$Session[i]\n  if (session == 1) type = 'D' else if (session >= 3) type = 'L'\n  if (type == 'L') sessionInfo$Test.Condition[i] = \"Light\" else if(type=='D') sessionInfo$Test.Condition[i] = \"Dark\"\n  labelZones(subject,session,type=type,file_path=file_path)\n}\nwrite.table(sessionInfo, \"data/activityInfo.txt\", row.names = F)\n",
+    "created" : 1407098659284.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1959908316",
+    "id" : "A286ACC0",
+    "lastKnownWriteTime" : 1407109805,
+    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/munge/activity/02.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

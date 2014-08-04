@@ -66,7 +66,7 @@ getRearData <- function(subject, session, file_path = getwd(), file_ext = "txt")
       }
       
 }
-  #Write data frame with summary stats
+  #Write data frame
   rearData = data.frame(Subject=subject,Session=session,Zone=Zone,RearCount=Count,RearStart=Start,
                         RearDuration=Duration)
   #If animal was rearing as the session ended, do not count last time point
@@ -74,22 +74,7 @@ getRearData <- function(subject, session, file_path = getwd(), file_ext = "txt")
     rearData=rearData[1:(nrow(rearData)-1),]  
   #Remove erroneous data
   rearData = subset(rearData,RearDuration<9)
-  #Create summary stats by zone
-  if ("dark" %in% rearData$Zone)
-  {
-    rearData$minRearDur[rearData$Zone=="dark"] = min(rearData$RearDuration[rearData$Zone=="dark"])
-    rearData$maxRearDur[rearData$Zone=="dark"] = max(rearData$RearDuration[rearData$Zone=="dark"])
-    rearData$meanRearDur[rearData$Zone=="dark"] = mean(rearData$RearDuration[rearData$Zone=="dark"])
-    rearData$varRearDur[rearData$Zone=="dark"] = var(rearData$RearDuration[rearData$Zone=="dark"])
-  }
-  if ("light" %in% rearData$Zone)
-  {
-    rearData$minRearDur[rearData$Zone=="light"] = min(rearData$RearDuration[rearData$Zone=="light"])
-    rearData$maxRearDur[rearData$Zone=="light"] = max(rearData$RearDuration[rearData$Zone=="light"])
-    rearData$meanRearDur[rearData$Zone=="light"] = mean(rearData$RearDuration[rearData$Zone=="light"])
-    rearData$varRearDur[rearData$Zone=="light"] = var(rearData$RearDuration[rearData$Zone=="light"])
-  }
 
-return (rearData)
+  return (rearData)
 }
 

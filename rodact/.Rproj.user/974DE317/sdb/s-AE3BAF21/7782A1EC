@@ -1,0 +1,16 @@
+{
+    "contents" : "library (rodact)\nactivityInfo = read.table(\"data/activityInfo.txt\",header=T,colClasses=\"character\")\nfile_path = \"data/raw/activity\"\nrearing = getRearData(activityInfo$Subject[1],activityInfo$Session[1],file_path=file_path)\nfor (i in 2:nrow(activityInfo))\n{\n  rearing = rbind(rearing,getRearData(activityInfo$Subject[i],activityInfo$Session[i],file_path=file_path))\n}\nwrite.table(rearing,\"data/rearing.txt\", row.names = F)\n#Create summary stats by zone\nif (\"dark\" %in% rearing$Zone)\n{\n  rearing$minRearDur[rearing$Zone==\"dark\"] = min(rearing$RearDuration[rearing$Zone==\"dark\"])\n  rearing$maxRearDur[rearing$Zone==\"dark\"] = max(rearing$RearDuration[rearing$Zone==\"dark\"])\n  rearing$meanRearDur[rearing$Zone==\"dark\"] = mean(rearing$RearDuration[rearing$Zone==\"dark\"])\n  rearing$varRearDur[rearing$Zone==\"dark\"] = var(rearing$RearDuration[rearing$Zone==\"dark\"])\n}\nif (\"light\" %in% rearing$Zone)\n{\n  rearing$minRearDur[rearing$Zone==\"light\"] = min(rearing$RearDuration[rearing$Zone==\"light\"])\n  rearing$maxRearDur[rearing$Zone==\"light\"] = max(rearing$RearDuration[rearing$Zone==\"light\"])\n  rearing$meanRearDur[rearing$Zone==\"light\"] = mean(rearing$RearDuration[rearing$Zone==\"light\"])\n  rearing$varRearDur[rearing$Zone==\"light\"] = var(rearing$RearDuration[rearing$Zone==\"light\"])\n}\nrearing = read.table(\"data/rearing.txt\",header=T)\nrearing = merge(activityInfo,rearing,by=c(\"Subject\",\"Session\"))\nsubjectInfo = read.table(\"data/subjectInfo.txt\",header=T)\nrearing = merge(subjectInfo,rearing,by=\"Subject\")\ncontext.freeze = read.table(\"data/context.freeze.txt\",header=T)\ntone.freeze = read.table(\"data/tone.freeze.txt\",header=T)\nrearing = merge(rearing,tone.freeze,by=\"Subject\")\nrearing$Line=as.factor(rearing$Line)\nlevels(rearing$Line)=c(\"LE\",\"RB\",\"HE\")\nqplot(RearStart,RearDuration,data=subset(rearing,RearStart<=600),\n      group=Line,geom=\"smooth\",color=Line,facets=Zone~Test.Condition~Generation,se=F)+theme_bw()\nqplot(RearStart,RearDuration,data=subset(rearing,RearStart<=600),\n      group=acqClass,geom=\"smooth\",color=acqClass,facets=Zone~Test.Condition~.)+theme_bw()\nqplot(RearStart,RearDuration,data=subset(rearing,RearStart<=600 & !is.na(extClass)),\n      group=extClass,geom=\"smooth\",color=extClass,facets=Zone~Test.Condition~.)+theme_bw()\n\nqplot(Generation,maxRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nqplot(Generation,meanRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nqplot(Generation,varRearDur,data=subset(RearData,Zone!=\"Doorway\"&Generation>2),\n      group=Line,geom=\"smooth\",method=\"lm\",color=Line,facets=Zone~Exposure)+theme_bw()\nwrite.table(RearData,file=\"Activity/RearingDuration.txt\",sep=\"\\t\",row.names=FALSE)",
+    "created" : 1407094924130.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "150284722",
+    "id" : "7782A1EC",
+    "lastKnownWriteTime" : 1407116843,
+    "path" : "~/Dropbox/R/Projects/SelectiveBreeding/munge/activity/03.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
